@@ -1,6 +1,11 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
 import styles from './Form.module.css'
+import EditTask from '../EditTask/EditTask'
+import pin from '../../assets/pin.png'
+import del from '../../assets/del.png'
+import editimg from '../../assets/edit.png'
+// import styles from './Form.module.css'
 
 // Create an Axios instance with a base URL
 const api = axios.create({
@@ -13,6 +18,16 @@ const Form = () => {
   const [taskName, setTaskName] = useState('')
   const [formAlert, setFormAlert] = useState('')
   const [formAlertClass, setFormAlertClass] = useState('')
+  const [edit, setEdit] = useState(false)
+  const [editTaskId, setEditTaskId] = useState(null)
+  const today = new Date()
+  const options = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  }
+  const formattedDate = today.toLocaleDateString('en-US', options)
 
   // Load tasks from /api/tasks
   const showTasks = async () => {
@@ -36,7 +51,7 @@ const Form = () => {
 
   useEffect(() => {
     showTasks()
-  }, [])
+  }, [edit])
 
   // Delete a task
   const deleteTask = async (id) => {
@@ -67,82 +82,97 @@ const Form = () => {
     }, 3000)
   }
 
+  //Handle when edit button is clicked
+  const handleEdit = (taskId) => {
+    setEditTaskId(taskId)
+    setEdit(true)
+  }
+
   return (
     <>
-      <div>
-        <form className='task-form' onSubmit={handleSubmit}>
-          <h4>task manager</h4>
-          <div className='form-control'>
-            <input
-              type='text'
-              name='name'
-              className='task-input'
-              placeholder='e.g. wash dishes'
-              value={taskName}
-              onChange={(e) => setTaskName(e.target.value)}
-            />
-            <button type='submit' className='btn submit-btn'>
-              submit
-            </button>
-          </div>
-          <div
-            className='form-alert'
-            style={{ display: formAlert ? 'block' : 'none' }}
-          >
-            <p className={formAlertClass}>{formAlert}</p>
-          </div>
-        </form>
-        <section className='tasks-container'>
-          <p
-            className='loading-text'
-            style={{ visibility: loading ? 'visible' : 'hidden' }}
-          >
-            Loading...
-          </p>
-          <div className='tasks'>
-            {tasks.length === 0 ? (
-              <h5 className='empty-list'>No tasks in your list</h5>
-            ) : (
-              tasks.map((task) => (
-                <div
-                  key={task._id}
-                  className={`single-task ${
-                    task.completed && 'task-completed'
-                  }`}
-                >
-                  <h5>
-                    <span>
-                      <i className='far fa-check-circle'></i>
-                    </span>
-                    {task.name}
-                  </h5>
-                  <div className='task-links'>
-                    <a href={`task.html?id=${task._id}`} className='edit-link'>
-                      <i className='fas fa-edit'></i>
-                    </a>
-                    <button
-                      type='button'
-                      className='delete-btn'
-                      data-id={task._id}
-                      onClick={() => deleteTask(task._id)}
-                    >
-                      delete
-                    </button>
-                    <button
-                      type='button'
-                      className='delete-btn'
-                      data-id={task._id}
-                      onClick={() => deleteTask(task._id)}
-                    >
-                      Edit
-                    </button>
-                  </div>
+      {!edit ? (
+        <div className={styles.mainContainer}>
+          <div className={styles.innerContainer}>
+            {/* Add a task */}
+            <div className={styles.leftContainer}>
+              <form className='task-form' onSubmit={handleSubmit}>
+                <h1>Add a new task:</h1>
+                <div className={styles.input}>
+                  <input
+                    type='text'
+                    name='name'
+                    className='task-input'
+                    placeholder='e.g. study web dev'
+                    value={taskName}
+                    onChange={(e) => setTaskName(e.target.value)}
+                  />
+                  <button type='submit' className='btn submit-btn'>
+                    Add
+                  </button>
                 </div>
-              ))
-            )}
+                <div
+                  className='form-alert'
+                  style={{ display: formAlert ? 'block' : 'none' }}
+                >
+                  <p className={formAlertClass}>{formAlert}</p>
+                </div>
+              </form>
+              <img
+                src='https://res.cloudinary.com/dduur8qoo/image/upload/v1698849299/Untitled_design_7_j3e3cm.png'
+                alt='add task'
+                className='image'
+              />
+            </div>
+
+            <div className={styles.rightContainer}>
+              <div className={styles.dateContainer}>
+                <h1>Today,</h1>
+                <h3>{formattedDate}</h3>
+              </div>
+              {/* Display tasks */}
+              <section className={styles.taskMain}>
+                <div className={styles.tasks}>
+                  {tasks.length === 0 ? (
+                    <h4 className={styles.empty}>
+                      No tasks in your list! <br /> Add some!!!
+                    </h4>
+                  ) : (
+                    tasks.map((task) => (
+                      <div key={task._id} className={styles.singleTask}>
+                        <div className={styles.imgCont}>
+                          <img src={pin} alt='pin' />
+                          <h5>{task.name}</h5>
+                        </div>
+                        <div className={styles.btns}>
+                          <img
+                            src={del} // Replace with the URL of your delete button image
+                            alt='delete'
+                            className={styles.deleteBtn}
+                            onClick={() => deleteTask(task._id)}
+                          />
+                          <img
+                            src={editimg}
+                            alt='edit'
+                            className={styles.editBtn}
+                            data-id={task._id}
+                            onClick={() => handleEdit(task._id)} // Pass the task ID
+                          />
+                        </div>
+                      </div>
+                    ))
+                  )}
+                </div>
+              </section>
+            </div>
           </div>
-        </section>
-      </div>
+        </div>
+      ) : (
+        <EditTask
+          taskId={editTaskId}
+          edit={edit}
+          toggleEdit={() => setEdit(false)}
+        />
+      )}
     </>
   )
 }

@@ -1,0 +1,58 @@
+.mainCont {
+  height: 98vh;
+  width: 98vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.innerCont {
+  width: 40%;
+  padding: 4rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: linear-gradient(to right bottom, #8abbf6, #bfdcff, #cae1ff);
+  align-items: center;
+  border-radius: 2rem;
+  box-shadow: 5px 5px 50px rgba(205, 207, 211, 0.3);
+}
+.one > h1 {
+  text-align: center;
+}
+.innerCont {
+  display: flex;
+}
+.inputCont > span {
+  font-size: 1.2rem;
+}
+.inputCont > input {
+  margin-bottom: 1rem;
+  padding: 0.7rem 1rem;
+  outline: none;
+  border: none;
+  border-radius: 0.7rem;
+  font-size: 1.1rem;
+  margin-left: 1rem;
+}
+.editbtn {
+  width: 100%;
+  padding: 0.4rem;
+  background-color: #0073ff;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  margin-top: 2rem;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  border-radius: 0.4rem;
+}
+.home {
+  border-radius: 0.4rem;
+  background-color: #00ff4c;
+  font-size: 1.1rem;
+  border: none;
+  outline: none;
+  cursor: pointer;
+  padding: 0.4rem;
+  width: 44.5%;
+}

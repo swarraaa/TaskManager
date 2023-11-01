@@ -1,0 +1,112 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+body {
+  background-image: url('../../assets/bg.jpg');
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: cover;
+  font-family: 'Kanit', sans-serif;
+}
+.mainContainer {
+  height: 98vh;
+  width: 98vw;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.innerContainer {
+  width: 70%;
+  height: 70%;
+  display: flex;
+  border-radius: 2rem;
+  box-shadow: 5px 5px 50px rgba(205, 207, 211, 0.3);
+}
+.leftContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 50%;
+  border-radius: 2rem 0 0 2rem;
+  background-image: linear-gradient(
+    to right bottom,
+    #1d7ff6,
+    #5aa4ff,
+    #8abbf6,
+    #bfdcff
+  );
+}
+.rightContainer {
+  border-radius: 0 2rem 2rem 0;
+  overflow: auto;
+  width: 50%;
+  box-sizing: border-box;
+}
+.dateContainer {
+  background-color: #5aa4ff;
+  padding: 1rem 2rem;
+  position: sticky;
+  /* border: 1px solid black; */
+}
+.taskMain {
+}
+.singleTask {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+  padding: 0.3rem 1rem;
+  font-size: 1.3rem;
+  background-color: #ffffff;
+  font-weight: 100;
+  transition: all 0.2s ease;
+}
+.singleTask:hover {
+  background-color: #bfdcff;
+}
+.imgCont {
+  display: flex;
+  align-items: center;
+}
+.imgCont > img {
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.leftContainer > img {
+  width: auto;
+  margin-top: 2rem;
+  height: 60%;
+}
+.input > input {
+  padding: 0.7rem 1rem;
+  outline: none;
+  border: none;
+  border-radius: 0.7rem 0 0 0.7rem;
+  font-size: 1.1rem;
+}
+.input > button {
+  padding: 0.7rem 2rem;
+  border-radius: 0 0.7rem 0.7rem 0;
+  cursor: pointer;
+  font-size: 1.1rem;
+  font-weight: 500;
+  border: none;
+  outline: none;
+  background-color: #03fc07;
+}
+
+.btns {
+  display: flex;
+  gap: 1rem;
+}
+.btns > img {
+  cursor: pointer;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+.btns > img:hover {
+  transform: scale(1.1);
+}
+.empty {
+  padding: 1rem 2rem;
+}

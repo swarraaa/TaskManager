@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import axios from 'axios'
+import styles from './EditTask.module.css'
 
-const EditTask = () => {
-  const [taskId, setTaskId] = useState('')
+const api = axios.create({
+  baseURL: 'http://localhost:3000/api/v1',
+})
+
+const EditTask = ({ taskId, edit, toggleEdit }) => {
   const [taskName, setTaskName] = useState('')
   const [taskCompleted, setTaskCompleted] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -10,19 +14,14 @@ const EditTask = () => {
   const [formAlertClass, setFormAlertClass] = useState('')
 
   useEffect(() => {
-    const params = new URLSearchParams(window.location.search)
-    const id = params.get('id')
-    setTaskId(id)
-    showTask(id)
+    showTask(taskId)
   }, [])
 
-  const showTask = async (id) => {
+  const showTask = async () => {
     try {
-      const response = await axios.get(`/api/v1/tasks/${id}`)
+      const response = await api.get(`/tasks/${taskId}`)
       const taskData = response.data.task
       const { _id: taskID, completed, name } = taskData
-
-      setTaskId(taskID)
       setTaskName(name)
       setTaskCompleted(completed)
       setLoading(false)
@@ -35,14 +34,13 @@ const EditTask = () => {
     e.preventDefault()
     try {
       setLoading(true)
-      const response = await axios.patch(`/api/v1/tasks/${taskId}`, {
+      const response = await api.patch(`/tasks/${taskId}`, {
         name: taskName,
         completed: taskCompleted,
       })
       const taskData = response.data.task
       const { _id: taskID, completed, name } = taskData
 
-      setTaskId(taskID)
       setTaskName(name)
       setTaskCompleted(completed)
       setFormAlert('Success, edited task')
@@ -60,46 +58,44 @@ const EditTask = () => {
   }
 
   return (
-    <div className='container'>
-      <form className='single-task-form' onSubmit={handleSubmit}>
-        <h4>Edit Task</h4>
-        <div className='form-control'>
-          <label>Task ID</label>
-          <p className='task-edit-id'>{taskId}</p>
-        </div>
-        <div className='form-control'>
-          <label htmlFor='name'>Name</label>
-          <input
-            type='text'
-            name='name'
-            className='task-edit-name'
-            value={taskName}
-            onChange={(e) => setTaskName(e.target.value)}
-          />
-        </div>
-        <div className='form-control'>
-          <label htmlFor='completed'>Completed</label>
-          <input
-            type='checkbox'
-            name='completed'
-            className='task-edit-completed'
-            checked={taskCompleted}
-            onChange={(e) => setTaskCompleted(e.target.checked)}
-          />
-        </div>
-        <button type='submit' className='block btn task-edit-btn'>
-          {loading ? 'Loading...' : 'Edit'}
+    <div className={styles.mainCont}>
+      <div className={styles.innerCont}>
+        <form className={styles.one} onSubmit={handleSubmit}>
+          <h1>Edit Task</h1>
+          <div className={styles.inputCont}>
+            <span>Name:</span>
+            <input
+              type='text'
+              name='name'
+              className='task-edit-name'
+              value={taskName}
+              onChange={(e) => setTaskName(e.target.value)}
+            />
+          </div>
+          <div className={styles.inputCont}>
+            <span>Completed:</span>
+            <input
+              type='checkbox'
+              name='completed'
+              className='task-edit-completed'
+              checked={taskCompleted}
+              onChange={(e) => setTaskCompleted(e.target.checked)}
+            />
+          </div>
+          <div
+            className='form-alert'
+            style={{ display: formAlert ? 'block' : 'none' }}
+          >
+            <p className={formAlertClass}>{formAlert}</p>
+          </div>
+          <button className={styles.editbtn} type='submit'>
+            {loading ? 'Loading...' : 'Edit'}
+          </button>
+        </form>
+        <button className={styles.home} onClick={() => toggleEdit()}>
+          Back to tasks
         </button>
-        <div
-          className='form-alert'
-          style={{ display: formAlert ? 'block' : 'none' }}
-        >
-          <p className={formAlertClass}>{formAlert}</p>
-        </div>
-      </form>
-      <a href='index.html' className='btn back-link'>
-        Back to tasks
-      </a>
+      </div>
     </div>
   )
 }

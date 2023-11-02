@@ -3,7 +3,7 @@ import axios from 'axios'
 import styles from './EditTask.module.css'
 
 const api = axios.create({
-  baseURL: 'http://localhost:3000/api/v1',
+  baseURL: 'https://taskmanager-backend-smi3.onrender.com',
 })
 
 const EditTask = ({ taskId, edit, toggleEdit }) => {

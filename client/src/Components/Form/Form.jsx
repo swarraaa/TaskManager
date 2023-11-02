@@ -9,7 +9,7 @@ import editimg from '../../assets/edit.png'
 
 // Create an Axios instance with a base URL
 const api = axios.create({
-  baseURL: 'https://taskmanager-backend-smi3.onrender.com',
+  baseURL: 'https://taskmanager-backend-smi3.onrender.com/api/v1',
 })
 
 const Form = () => {
